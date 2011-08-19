@@ -51,36 +51,8 @@ Using PHPUnit From a Git Checkout
 The following commands can be used to perform the initial checkout of PHPUnit and its dependencies from Git:
 
     mkdir phpunit && cd phpunit
-    git clone git://github.com/sebastianbergmann/phpunit.git
-    git clone git://github.com/sebastianbergmann/dbunit.git
-    git clone git://github.com/sebastianbergmann/php-file-iterator.git
-    git clone git://github.com/sebastianbergmann/php-text-template.git
-    git clone git://github.com/sebastianbergmann/php-code-coverage.git
-    git clone git://github.com/sebastianbergmann/php-token-stream.git
-    git clone git://github.com/sebastianbergmann/php-timer.git
-    git clone git://github.com/sebastianbergmann/phpunit-mock-objects.git
-    git clone git://github.com/sebastianbergmann/phpunit-selenium.git
+    git clone the phpunit source
+    git submodule update --init --recursive
 
-The `dbunit`, `php-code-coverage`, `php-file-iterator`, `php-text-template`, `php-timer`, `php-token-stream`, `phpunit`, `phpunit-mock-objects`, and `phpunit-selenium` directories need to be added to the `include_path`.
+The `phpunit.php` script can be used to invoke the PHPUnit test runner.
 
-The `phpunit/phpunit.php` script can be used to invoke the PHPUnit test runner.
-
-The following commands can be used to check out the appropriate branches for PHPUnit 3.5:
-
-    cd phpunit && git checkout 3.5 && cd ..
-    cd dbunit && git checkout 1.0 && cd ..
-    cd php-file-iterator && git checkout 1.2 && cd ..
-    cd php-code-coverage && git checkout 1.0 && cd ..
-    cd php-token-stream && git checkout 1.0 && cd ..
-    cd phpunit-mock-objects && git checkout 1.0 && cd ..
-    cd phpunit-selenium && git checkout 1.0 && cd ..
-
-The following commands can be used to check out the appropriate branches for PHPUnit 3.6:
-
-    cd phpunit && git checkout master && cd ..
-    cd dbunit && git checkout master && cd ..
-    cd php-file-iterator && git checkout master && cd ..
-    cd php-code-coverage && git checkout master && cd ..
-    cd php-token-stream && git checkout master && cd ..
-    cd phpunit-mock-objects && git checkout master && cd ..
-    cd phpunit-selenium && git checkout master && cd ..

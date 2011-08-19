@@ -35,6 +35,27 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+if (is_dir(__DIR__ . '/external')) {
+	set_include_path(
+		implode(
+			PATH_SEPARATOR, array(
+				__DIR__,
+				__DIR__ . '/external',
+				__DIR__ . '/external/dbunit',
+				__DIR__ . '/external/symfony/src/',
+				__DIR__ . '/external/php-code-coverage',
+				__DIR__ . '/external/php-file-iterator',
+				__DIR__ . '/external/php-text-template',
+				__DIR__ . '/external/php-timer',
+				__DIR__ . '/external/php-token-stream',
+				__DIR__ . '/external/phpunit-mock-objects',
+				__DIR__ . '/external/phpunit-selenium',
+				get_include_path()
+			)
+		)
+	);
+}
+
 require_once 'PHP/CodeCoverage/Filter.php';
 PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__, 'PHPUNIT');
 

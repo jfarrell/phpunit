@@ -1,0 +1,27 @@
+[submodule "external/php-code-coverage"]
+	path = external/php-code-coverage
+	url = git://github.com/sebastianbergmann/php-code-coverage
+[submodule "external/php-file-iterator"]
+	path = external/php-file-iterator
+	url = git://github.com/sebastianbergmann/php-file-iterator
+[submodule "external/php-text-template"]
+	path = external/php-text-template
+	url = git://github.com/sebastianbergmann/php-text-template
+[submodule "external/php-token-stream"]
+	path = external/php-token-stream
+	url = git://github.com/sebastianbergmann/php-token-stream
+[submodule "external/dbunit"]
+	path = external/dbunit
+	url = git://github.com/sebastianbergmann/dbunit
+[submodule "external/phpunit-selenium"]
+	path = external/phpunit-selenium
+	url = git://github.com/sebastianbergmann/phpunit-selenium
+[submodule "external/phpunit-mock-objects"]
+	path = external/phpunit-mock-objects
+	url = git://github.com/sebastianbergmann/phpunit-mock-objects
+[submodule "external/php-timer"]
+	path = external/php-timer
+	url = git://github.com/sebastianbergmann/php-timer
+[submodule "external/symfony"]
+	path = external/symfony
+	url = git://github.com/symfony/symfony

@@ -43,7 +43,7 @@
  * @since      File available since Release 3.0.0
  */
 
-require_once 'SymfonyComponents/YAML/sfYamlDumper.php';
+require_once 'Symfony/Component/Yaml/Dumper.php';
 
 /**
  * A TestListener that generates a logfile of the

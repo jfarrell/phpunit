@@ -2,7 +2,7 @@
 /**
  * PHPUnit
  *
- * Copyright (c) 2002-2011, Sebastian Bergmann <sebastian@phpunit.de>.
+ * Copyright (c) 2001-2012, Sebastian Bergmann <sebastian@phpunit.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -36,22 +36,18 @@
  *
  * @package    PHPUnit
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2001-2012 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link       http://www.phpunit.de/
  * @since      File available since Release 3.3.0
  */
-
-require_once 'PHPUnit/Framework/TestCase.php';
-
-require_once 'PHPUnit/Util/Configuration.php';
 
 /**
  *
  *
  * @package    PHPUnit
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2001-2012 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
@@ -64,7 +60,7 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->configuration = PHPUnit_Util_Configuration::getInstance(
-          dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'configuration.xml'
+          dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'configuration.xml'
         );
     }
 
@@ -179,6 +175,11 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
 
     public function testListenerConfigurationIsReadCorrectly()
     {
+        $dir = __DIR__;
+        $includePath = ini_get('include_path');
+
+        ini_set('include_path', $dir . PATH_SEPARATOR . $includePath);
+
         $this->assertEquals(
           array(
             0 =>
@@ -196,13 +197,20 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
                 3 => 19.78,
                 4 => NULL,
                 5 => new stdClass,
-                6 => dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'MyTestFile.php',
-                7 => dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'MyRelativePath',
+                6 => dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'MyTestFile.php',
+                7 => dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'MyRelativePath',
               ),
             ),
+            array(
+              'class' => 'IncludePathListener',
+              'file' => __FILE__,
+              'arguments' => array()
+            )
           ),
           $this->configuration->getListenerConfiguration()
         );
+
+        ini_set('include_path', $includePath);
     }
 
     public function testLoggingConfigurationIsReadCorrectly()
@@ -222,8 +230,6 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
             'tap' => '/tmp/logfile.tap',
             'logIncompleteSkipped' => FALSE,
             'junit' => '/tmp/logfile.xml',
-            'story-html' => '/tmp/story.html',
-            'story-text' => '/tmp/story.txt',
             'testdox-html' => '/tmp/testdox.html',
             'testdox-text' => '/tmp/testdox.txt',
           ),
@@ -235,7 +241,11 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
     {
         $this->assertEquals(
           array(
-            'include_path' => dirname(dirname(__FILE__)).'/_files/.',
+            'include_path' =>
+            array(
+              dirname(__DIR__) . '/_files/.',
+              '/path/to/lib'
+            ),
             'ini'=> array('foo' => 'bar'),
             'const'=> array('foo' => FALSE, 'bar' => TRUE),
             'var'=> array('foo' => FALSE),
@@ -258,10 +268,13 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
     {
         $this->configuration->handlePHPConfiguration();
 
+        $path = dirname(__DIR__) . '/_files/.' . PATH_SEPARATOR . '/path/to/lib';
+        $this->assertStringStartsWith($path, ini_get('include_path'));
         $this->assertEquals(FALSE, foo);
         $this->assertEquals(TRUE, bar);
         $this->assertEquals(FALSE, $GLOBALS['foo']);
         $this->assertEquals(TRUE, $_ENV['foo']);
+        $this->assertEquals(TRUE, getenv('foo'));
         $this->assertEquals('bar', $_POST['foo']);
         $this->assertEquals('bar', $_GET['foo']);
         $this->assertEquals('bar', $_COOKIE['foo']);
@@ -277,17 +290,21 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
             'backupGlobals' => TRUE,
             'backupStaticAttributes' => FALSE,
             'bootstrap' => '/path/to/bootstrap.php',
+            'cacheTokens' => TRUE,
             'colors' => FALSE,
             'convertErrorsToExceptions' => TRUE,
             'convertNoticesToExceptions' => TRUE,
             'convertWarningsToExceptions' => TRUE,
             'forceCoversAnnotation' => FALSE,
             'mapTestClassNameToCoveredClassName' => FALSE,
+            'printerClass' => 'PHPUnit_TextUI_ResultPrinter',
             'stopOnFailure' => FALSE,
             'strict' => FALSE,
-            'syntaxCheck' => FALSE,
             'testSuiteLoaderClass' => 'PHPUnit_Runner_StandardTestSuiteLoader',
-            'verbose' => FALSE
+            'verbose' => FALSE,
+            'timeoutForSmallTests' => 1,
+            'timeoutForMediumTests' => 10,
+            'timeoutForLargeTests' => 60
           ),
           $this->configuration->getPHPUnitConfiguration()
         );

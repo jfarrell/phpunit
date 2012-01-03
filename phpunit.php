@@ -2,7 +2,7 @@
 <?php
 /* PHPUnit
  *
- * Copyright (c) 2002-2011, Sebastian Bergmann <sebastian@phpunit.de>.
+ * Copyright (c) 2001-2012, Sebastian Bergmann <sebastian@phpunit.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -56,8 +56,7 @@ if (is_dir(__DIR__ . '/external')) {
 	);
 }
 
-require_once 'PHP/CodeCoverage/Filter.php';
-PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__, 'PHPUNIT');
+define('PHPUnit_MAIN_METHOD', 'PHPUnit_TextUI_Command::main');
 
 if (strpos('@php_bin@', '@php_bin') === 0) {
     set_include_path(dirname(__FILE__) . PATH_SEPARATOR . get_include_path());
@@ -65,6 +64,5 @@ if (strpos('@php_bin@', '@php_bin') === 0) {
 
 require_once 'PHPUnit/Autoload.php';
 
-define('PHPUnit_MAIN_METHOD', 'PHPUnit_TextUI_Command::main');
-
 PHPUnit_TextUI_Command::main();
+
